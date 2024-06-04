@@ -1,7 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const PanelProductos = () => {
-  useEffect(() => {}, []);
+
+    const [ProductsList, setProductsList] = useState([]);
+    const [IsLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_URL_API}/consulta/new/productos/all`)
+    .then((response) => response.json())
+    .then((data) => setProductsList(data?.datos))
+    .catch((err) => console.warn(err))
+    .finally(() => setIsLoading(false));
+  }, []);
 
   return (
     <div>
@@ -9,8 +19,8 @@ const PanelProductos = () => {
         <div class="bg-white p-8 rounded-md w-full">
           <div class=" flex items-center justify-between pb-6">
             <div>
-              <h2 class="text-gray-600 font-semibold">Products Oder</h2>
-              <span class="text-xs">All products item</span>
+              <h2 class="text-gray-600 font-semibold">Listado de productos</h2>
+              <span class="text-xs">Listado de todo los productos en el inventario</span>
             </div>
             <div class="flex items-center justify-between">
               <div class="flex bg-gray-50 items-center p-2 rounded-md">
@@ -35,11 +45,8 @@ const PanelProductos = () => {
                 />
               </div>
               <div class="lg:ml-40 ml-10 space-x-8">
-                <button class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
-                  New Report
-                </button>
-                <button class="bg-indigo-600 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
-                  Create
+                <button class="bg-pink-300 px-4 py-2 rounded-md text-white font-semibold tracking-wide cursor-pointer">
+                  Agregar
                 </button>
               </div>
             </div>
@@ -51,191 +58,60 @@ const PanelProductos = () => {
                   <thead>
                     <tr>
                       <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Name
+                        Nombre
                       </th>
                       <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        products
+                        SubCategoria
                       </th>
                       <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Created at
+                        Stock
                       </th>
                       <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        QRT
+                        Imagen
                       </th>
                       <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Status
+                        Precio
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    {IsLoading && <tr className="my-3 mx-auto flex align-center justify-center"><td colSpan="3"><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" class="spinner_P7sC"/></svg></td></tr>}
+                    {ProductsList.map(el => <tr>
                       <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <div class="flex items-center">
-                          <div class="flex-shrink-0 w-10 h-10">
+                          {/* <div class="flex-shrink-0 w-10 h-10">
                             <img
                               class="w-full h-full rounded-full"
                               src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
                               alt=""
                             />
-                          </div>
+                          </div> */}
                           <div class="ml-3">
                             <p class="text-gray-900 whitespace-no-wrap">
-                              Vera Carpenter
+                              {el.nombre}
                             </p>
                           </div>
                         </div>
                       </td>
                       <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">Admin</p>
+                        <p class="text-gray-900 whitespace-no-wrap">{el.subCategoria}</p>
                       </td>
                       <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <p class="text-gray-900 whitespace-no-wrap">
-                          Jan 21, 2020
+                        {el.stock}
                         </p>
                       </td>
                       <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">43</p>
+                        <img src={el.imageurl} height={75} width={75} alt="" />
                       </td>
                       <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                          <span
-                            aria-hidden
-                            class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
-                          ></span>
-                          <span class="relative">Activo</span>
+                          <b>$</b><span class="relative">{el.precio}</span>
                         </span>
                       </td>
-                    </tr>
-                    <tr>
-                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <div class="flex items-center">
-                          <div class="flex-shrink-0 w-10 h-10">
-                            <img
-                              class="w-full h-full rounded-full"
-                              src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                              alt=""
-                            />
-                          </div>
-                          <div class="ml-3">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                              Blake Bowman
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">Editor</p>
-                      </td>
-                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">
-                          Jan 01, 2020
-                        </p>
-                      </td>
-                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">77</p>
-                      </td>
-                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                          <span
-                            aria-hidden
-                            class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
-                          ></span>
-                          <span class="relative">Activo</span>
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <div class="flex items-center">
-                          <div class="flex-shrink-0 w-10 h-10">
-                            <img
-                              class="w-full h-full rounded-full"
-                              src="https://images.unsplash.com/photo-1540845511934-7721dd7adec3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                              alt=""
-                            />
-                          </div>
-                          <div class="ml-3">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                              Dana Moore
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">Editor</p>
-                      </td>
-                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">
-                          Jan 10, 2020
-                        </p>
-                      </td>
-                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">64</p>
-                      </td>
-                      <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <span class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
-                          <span
-                            aria-hidden
-                            class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"
-                          ></span>
-                          <span class="relative">Suspended</span>
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="px-5 py-5 bg-white text-sm">
-                        <div class="flex items-center">
-                          <div class="flex-shrink-0 w-10 h-10">
-                            <img
-                              class="w-full h-full rounded-full"
-                              src="https://images.unsplash.com/photo-1522609925277-66fea332c575?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&h=160&w=160&q=80"
-                              alt=""
-                            />
-                          </div>
-                          <div class="ml-3">
-                            <p class="text-gray-900 whitespace-no-wrap">
-                              Alonzo Cox
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="px-5 py-5 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">Admin</p>
-                      </td>
-                      <td class="px-5 py-5 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">
-                          Jan 18, 2020
-                        </p>
-                      </td>
-                      <td class="px-5 py-5 bg-white text-sm">
-                        <p class="text-gray-900 whitespace-no-wrap">70</p>
-                      </td>
-                      <td class="px-5 py-5 bg-white text-sm">
-                        <span class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                          <span
-                            aria-hidden
-                            class="absolute inset-0 bg-red-200 opacity-50 rounded-full"
-                          ></span>
-                          <span class="relative">Inactive</span>
-                        </span>
-                      </td>
-                    </tr>
+                    </tr>)}
                   </tbody>
                 </table>
-                <div class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
-                  <span class="text-xs xs:text-sm text-gray-900">
-                    Showing 1 to 4 of 50 Entries
-                  </span>
-                  <div class="inline-flex mt-2 xs:mt-0">
-                    <button class="text-sm text-indigo-50 transition duration-150 hover:bg-indigo-500 bg-indigo-600 font-semibold py-2 px-4 rounded-l">
-                      Prev
-                    </button>
-                    &nbsp; &nbsp;
-                    <button class="text-sm text-indigo-50 transition duration-150 hover:bg-indigo-500 bg-indigo-600 font-semibold py-2 px-4 rounded-r">
-                      Next
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
