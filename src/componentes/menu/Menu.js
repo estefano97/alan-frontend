@@ -21,8 +21,8 @@ const Menu = () => {
 
   const { id = null, rol = "cliente" } = token ? jwt_decode(token) : {};
 
-  const isAdmin = rol !== "cliente";
-
+  const isAdmin = rol === "administrator";
+  console.log(isAdmin)
   const logout = () => {
     localStorage.removeItem("token");
     window.location.href = "/";
@@ -72,16 +72,26 @@ const Menu = () => {
               </Offcanvas.Header>
               <Offcanvas.Body style={{ background: "#ffff" }} id="canvasText">
                 <Nav className="justify-content-center flex-grow-1">
-                  <Nav.Link href="/" className="mx-1">
-                    INICIO
-                  </Nav.Link>
-                  <Nav.Link href="/tienda" className="mx-1">
-                    TIENDA
-                  </Nav.Link>
-                  <Nav.Link href="/cotizacion" className="mx-1">
-                    COTIZACION
-                  </Nav.Link>
-
+                  {!isAdmin && (
+                    <Nav.Link href="/" className="mx-1">
+                      INICIO
+                    </Nav.Link>
+                  )}
+                  {!isAdmin && (
+                    <Nav.Link href="/tienda" className="mx-1">
+                      TIENDA
+                    </Nav.Link>
+                  )}
+                  {!isAdmin && (
+                    <Nav.Link href="/cotizacion" className="mx-1">
+                      COTIZACION
+                    </Nav.Link>
+                  )}
+                  {isAdmin && (
+                    <Nav.Link href="/panel-productos" className="mx-1">
+                      PANEL PRODUCTOS
+                    </Nav.Link>
+                  )}
                   {isAdmin && (
                     <Nav.Link href="/cotizaciones" className="mx-1">
                       COTIZACIONES
@@ -93,14 +103,16 @@ const Menu = () => {
                       CLIENTE
                     </Nav.Link>
                   )}
-
-                  <Nav.Link href="/contacto" className="mx-1">
-                    CONTACTO
-                  </Nav.Link>
-                  <Nav.Link href="/nosotros" className="mx-1">
-                    NOSOTROS
-                  </Nav.Link>
-
+                  {!isAdmin && (
+                    <Nav.Link href="/contacto" className="mx-1">
+                      CONTACTO
+                    </Nav.Link>
+                  )}
+                  {!isAdmin && (
+                    <Nav.Link href="/nosotros" className="mx-1">
+                      NOSOTROS
+                    </Nav.Link>
+                  )}
                   {!id && (
                     <Nav.Link href="/login" className="mx-1">
                       LOGIN

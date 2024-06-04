@@ -1,17 +1,11 @@
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
-
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import PaginationTabla from "../../componentes/PaginationTabla";
 
 const ColCategory = ({ categorias, categoria, subCategoria, detalle }) => {
   const navigate = useNavigate();
 
-  const { nombre, imagen = "NoImage", alt } = categorias;
+  const { nombre, imageurl = "NoImage" } = categorias;
 
   const viewPage = () => {
     if (subCategoria)
@@ -25,7 +19,8 @@ const ColCategory = ({ categorias, categoria, subCategoria, detalle }) => {
       <div className="h-full w-full bg-gray-200 flex items-center justify-center" style={{ cursor: "pointer" }}>
         <img
           className="object-cover h-full w-full transform transition-transform duration-300 hover:scale-105"
-          src={`/images/${imagen}`}
+          src={`/images/${imageurl}`}
+          alt={nombre}
         />
       </div>
       <div className="absolute bottom-4 left-0 right-0">

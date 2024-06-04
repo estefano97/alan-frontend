@@ -19,6 +19,7 @@ import Login from "./componentes/login/Login";
 import Cliente from "./componentes/cliente/Cliente";
 import AddProducto from "./componentes/tienda/producto/agregarProducto";
 import Carrito from "./componentes/carrito/Carrito";
+import PanelProductos from "./componentes/panel/PanelProductos";
 
 function App() {
   // localStorage.removeItem("token")
@@ -30,6 +31,7 @@ function App() {
         {/* Páginas */}
         <Route exact path="/" element={<Home />} />
         <Route path="/tienda" element={<Tienda />} />
+        <Route path="/panel-productos" element={<PanelProductos />} />
         <Route path="/categoria-producto/:categoria" element={<Categoria />} />
         <Route
           path="/categoria-producto/:categoria/:subCategoria"

@@ -12,7 +12,7 @@ const Tienda = () => {
 
   useEffect(() => {
     const enviarData = () => {
-      fetch(`${process.env.REACT_APP_URL_API}/consulta/categoria`)
+      fetch(`${process.env.REACT_APP_URL_API}/consulta/new/categoria`)
         .then((response) => response.json())
         .then((data) => setCategory(data?.datos))
         .catch((err) => console.warn(err));

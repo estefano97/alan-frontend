@@ -20,6 +20,7 @@ const Categoria = () => {
         `${
           process.env.REACT_APP_URL_API
         }/consulta/categoria?categoria=${categoria.replace(/_/g, " ")}`
+        // /consulta/new/sub-categoria/${categoria.replace(/_/g, " ")}`
       )
         .then((response) => response.json())
         .then((data) => setCategory(data?.datos))
